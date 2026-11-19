@@ -1,46 +1,83 @@
-## Contributing
+# Contributing to Steam Localization Gap Atlas
 
-We welcome contributions of all kinds to improve this project! Here's how you can get involved:
+We welcome contributions of all kinds, including bug reports, documentation improvements, dataset parsing refinements, and feature enhancements.
 
-1. **Fork the Repository**: Start by forking the repository to your GitHub account.
+---
 
-2. **Clone Your Fork**: Clone the forked repository to your local machine:
+## Code of Conduct
 
-   ```bash
-   git clone <repo_url>
-   cd repo_dir
-   ```
+This project adheres to the [Contributor Covenant Code of Conduct](./CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code.
 
-3. **Create a Branch**: Create a new branch for your feature or bug fix:
+---
 
-   ```bash
-   git checkout -b feature-name
-   ```
+## Development Workflow
 
-4. **Make Changes**: Make your changes to the codebase. Be sure to follow existing code style and conventions.
+### 1. Prerequisites
 
-5. **Commit Changes**: Commit your changes with a clear and descriptive message:
+- **Go:** 1.22+
+- **Node.js:** 20+
+- **pnpm:** 9+
 
-   ```bash
-   git commit -m "Add detailed description of the changes"
-   ```
+### 2. Fork & Clone
 
-6. **Push Changes**: Push your changes to your fork:
+```bash
+git clone https://github.com/laymanmax/steam-localization-atlas.git
+cd steam-localization-atlas
+```
 
-   ```bash
-   git push origin feature-name
-   ```
+### 3. Setup Dependencies
 
-7. **Submit a Pull Request**: Open a pull request from your branch to the main repository's branch. Include a detailed description of your changes and the problem they solve.
+```bash
+make setup
+```
 
-8. **Review and Feedback**: Participate in the review process. Make any requested changes, and your contribution will be merged!
+### 4. Create a Feature Branch
 
-### Guidelines
+```bash
+git checkout -b feature/your-feature-name
+```
 
-- Ensure your code follows the existing style and conventions.
-- Include tests for any new functionality or bug fixes.
-- Write clear, concise commit messages and pull request descriptions.
+### 5. Running the Application Locally
 
-### Issues
+```bash
+# Ingest the dataset (or use an existing local Parquet file)
+make ingest
 
-Feel free to report bugs or suggest enhancements by creating an issue. Be sure to include detailed information about the problem and, if possible, steps to reproduce it.
+# Start the Go server (serves API and frontend)
+make dev
+```
+
+Visit `http://localhost:8080` in your browser.
+
+---
+
+## Automated Testing & Validation
+
+Before submitting a pull request, ensure all backend and frontend tests pass:
+
+```bash
+# Run Go unit tests and frontend test suite
+make test
+
+# Run dataset validation checks
+make validate
+
+# Verify production builds
+make build
+```
+
+---
+
+## Contribution Guidelines
+
+1. **Analytical Integrity:**
+   - Calculations, denominators, and aggregates must remain in the Go backend (`internal/analytics`).
+   - Maintain the distinction between _observed metadata representation_ and unsupported claims of commercial market size or player demand.
+2. **Language Normalization:**
+   - Preserve regional variants (Simplified Chinese vs. Traditional Chinese, Brazilian Portuguese vs. European Portuguese, European Spanish vs. Latin American Spanish).
+   - Test new language mappings in `internal/normalization/normalization_test.go`.
+3. **Commit Messages:**
+   - Write clear, imperative commit messages (e.g., `feat: add release period filter to gap ranking`, `fix: handle edge case in delimiter parsing`).
+4. **Pull Requests:**
+   - Reference any relevant issues.
+   - Summarize the changes made, the motivation, and test coverage provided.
